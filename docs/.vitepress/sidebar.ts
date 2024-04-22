@@ -666,6 +666,16 @@ export function getSidebar() {
         ],
       },
       {
+        text: 'OP Stack Actions',
+        link: '/core/api/op-stack/actions',
+        items: [
+          {
+            text: 'estimateL1Fee',
+            link: '/core/api/op-stack/actions/estimateL1Fee',
+          },
+        ],
+      },
+      {
         text: 'Miscellaneous',
         items: [
           { text: 'Errors', link: '/core/api/errors' },
