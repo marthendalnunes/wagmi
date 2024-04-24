@@ -145,6 +145,10 @@ export function getSidebar() {
           },
           { text: 'useBalance', link: '/react/api/hooks/useBalance' },
           {
+            text: 'useBlobBaseFee',
+            link: '/react/api/hooks/useBlobBaseFee',
+          },
+          {
             text: 'useBlockNumber',
             link: '/react/api/hooks/useBlockNumber',
           },
@@ -477,6 +481,10 @@ export function getSidebar() {
           },
           { text: 'getAccount', link: '/core/api/actions/getAccount' },
           { text: 'getBalance', link: '/core/api/actions/getBalance' },
+          {
+            text: 'getBlobBaseFee',
+            link: '/core/api/actions/getBlobBaseFee',
+          },
           {
             text: 'getBlock',
             link: '/core/api/actions/getBlock',
