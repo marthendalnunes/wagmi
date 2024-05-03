@@ -1,9 +1,9 @@
 import { type Account, type Chain } from 'viem'
 import {
-  estimateL1Fee as viem_estimateL1Fee,
   type EstimateL1FeeErrorType as viem_EstimateL1FeeErrorType,
   type EstimateL1FeeParameters as viem_EstimateL1FeeParameters,
   type EstimateL1FeeReturnType as viem_EstimateL1FeeReturnType,
+  estimateL1Fee as viem_estimateL1Fee,
 } from 'viem/op-stack'
 import { type Config } from '../../createConfig.js'
 import type { BaseErrorType, ErrorType } from '../../errors/base.js'

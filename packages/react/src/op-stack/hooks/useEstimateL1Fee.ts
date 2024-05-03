@@ -4,11 +4,11 @@ import { type Config, type ResolvedRegister } from '@wagmi/core'
 import { type Evaluate } from '@wagmi/core/internal'
 import { type EstimateL1FeeErrorType } from '@wagmi/core/op-stack'
 import {
-  estimateL1FeeQueryOptions,
   type EstimateL1FeeData,
   type EstimateL1FeeOptions,
   type EstimateL1FeeQueryFnData,
   type EstimateL1FeeQueryKey,
+  estimateL1FeeQueryOptions,
 } from '@wagmi/core/op-stack/query'
 
 import { useChainId } from '../../hooks/useChainId.js'
@@ -17,7 +17,7 @@ import {
   type ConfigParameter,
   type QueryParameter,
 } from '../../types/properties.js'
-import { useQuery, type UseQueryReturnType } from '../../utils/query.js'
+import { type UseQueryReturnType, useQuery } from '../../utils/query.js'
 
 export type UseEstimateL1FeeParameters<
   config extends Config = Config,

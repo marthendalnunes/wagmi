@@ -4,10 +4,10 @@ import { filterQueryOptions } from '../../query/utils.js'
 import type { ScopeKeyParameter } from '../../types/properties.js'
 import type { UnionPartial } from '../../types/utils.js'
 import {
-  estimateL1Fee,
   type EstimateL1FeeErrorType,
   type EstimateL1FeeParameters,
   type EstimateL1FeeReturnType,
+  estimateL1Fee,
 } from '../actions/estimateL1Fee.js'
 
 export type EstimateL1FeeOptions<
