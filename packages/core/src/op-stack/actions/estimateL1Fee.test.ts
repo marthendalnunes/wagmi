@@ -10,14 +10,10 @@ const baseTransaction = {
   maxPriorityFeePerGas: parseGwei('1'),
   to: accounts[1],
   value: parseEther('0.1'),
-}
+} as const
 
 test('default', async () => {
-  await expect(
-    estimateL1Fee(config, {
-      ...baseTransaction,
-    }),
-  ).resolves.toBeTypeOf('bigint')
+  await expect(estimateL1Fee(config, {})).resolves.toBeTypeOf('bigint')
 })
 
 test('minimal', async () => {

@@ -24,7 +24,8 @@
     "/actions",
     "/chains",
     "/internal",
-    "/query"
+    "/query",
+    "/op-stack"
   ],
   "sideEffects": false,
   "type": "module",
@@ -56,6 +57,14 @@
       "types": "./dist/types/exports/query.d.ts",
       "default": "./dist/esm/exports/query.js"
     },
+    "./op-stack": {
+      "types": "./dist/types/op-stack/exports/index.d.ts",
+      "default": "./dist/esm/op-stack/exports/index.js"
+    },
+    "./op-stack/query": {
+      "types": "./dist/types/op-stack/exports/query.d.ts",
+      "default": "./dist/esm/op-stack/exports/query.js"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -74,6 +83,12 @@
       ],
       "query": [
         "./dist/types/exports/query.d.ts"
+      ],
+      "op-stack": [
+        "./dist/types/op-stack/exports/index.d.ts"
+      ],
+      "op-stack/query": [
+        "./dist/types/op-stack/exports/query.d.ts"
       ]
     }
   },
