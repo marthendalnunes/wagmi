@@ -1,8 +1,8 @@
 import { connect, disconnect } from '@wagmi/core'
 import { config } from '@wagmi/test'
-import { renderHook, waitFor } from '@wagmi/test/react'
-import { type TransactionRequestBase, parseEther } from 'viem'
-import { expect, test } from 'vitest'
+import { renderHook } from '@wagmi/test/react'
+import { parseEther, type TransactionRequestBase } from 'viem'
+import { expect, test, vi } from 'vitest'
 
 import { useSignTransaction } from './useSignTransaction.js'
 
@@ -17,14 +17,14 @@ const base = {
 test('default', async () => {
   await connect(config, { connector })
 
-  const { result } = renderHook(() => useSignTransaction())
+  const { result } = await renderHook(() => useSignTransaction())
 
-  result.current.signTransaction({
+  result.current.mutate({
     ...base,
     to: '0xd2135CfB216b74109775236E36d4b433F1DF507B',
     value: parseEther('0.01'),
   })
-  await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+  await vi.waitUntil(() => result.current.isSuccess, { timeout: 5_000 })
 
   expect(result.current.data).toMatchInlineSnapshot(
     '"0x02f870018203118085065e22cad982520894d2135cfb216b74109775236e36d4b433f1df507b872386f26fc1000080c080a0af0d6c8691aae5ecfe11b40f69ea580980175ce3a242b431f65c6192c5f59663a0016d0a36a9b3100da6a45d818a4261d64ad5276d07f6313e816777705e619b91"',

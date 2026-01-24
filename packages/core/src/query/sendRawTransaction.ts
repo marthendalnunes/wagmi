@@ -7,22 +7,41 @@ import {
   sendRawTransaction,
 } from '../actions/sendRawTransaction.js'
 import type { Config } from '../createConfig.js'
+import type { MutationParameter } from '../types/query.js'
 import type { Compute } from '../types/utils.js'
 
-export function sendRawTransactionMutationOptions<config extends Config>(
+export type SendRawTransactionOptions<
+  config extends Config,
+  context = unknown,
+> = MutationParameter<
+  SendRawTransactionData,
+  SendRawTransactionErrorType,
+  SendRawTransactionVariables<config, config['chains'][number]['id']>,
+  context
+>
+
+export function sendRawTransactionMutationOptions<
+  config extends Config,
+  context,
+>(
   config: config,
-) {
+  options: SendRawTransactionOptions<config, context> = {},
+): SendRawTransactionMutationOptions<config> {
   return {
+    ...(options.mutation as any),
     mutationFn(variables) {
       return sendRawTransaction(config, variables)
     },
     mutationKey: ['sendRawTransaction'],
-  } as const satisfies MutationOptions<
+  }
+}
+
+export type SendRawTransactionMutationOptions<config extends Config> =
+  MutationOptions<
     SendRawTransactionData,
     SendRawTransactionErrorType,
     SendRawTransactionVariables<config, config['chains'][number]['id']>
   >
-}
 
 export type SendRawTransactionData = Compute<SendRawTransactionReturnType>
 

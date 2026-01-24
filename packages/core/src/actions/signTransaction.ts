@@ -7,10 +7,7 @@ import type {
   SignTransactionParameters as viem_SignTransactionParameters,
   SignTransactionReturnType as viem_SignTransactionReturnType,
 } from 'viem'
-import {
-  estimateGas as viem_estimateGas,
-  signTransaction as viem_signTransaction,
-} from 'viem/actions'
+import { signTransaction as viem_signTransaction } from 'viem/actions'
 
 import type { Config } from '../createConfig.js'
 import type { BaseErrorType, ErrorType } from '../errors/base.js'
@@ -21,7 +18,6 @@ import type {
 } from '../types/properties.js'
 import type { Compute } from '../types/utils.js'
 import { getAction } from '../utils/getAction.js'
-import { getAccount } from './getAccount.js'
 import {
   type GetConnectorClientErrorType,
   getConnectorClient,
@@ -66,46 +62,31 @@ export async function signTransaction<
   config: config,
   parameters: SignTransactionParameters<config, chainId>,
 ): Promise<SignTransactionReturnType> {
-  const { account, chainId, connector, gas: gas_, ...rest } = parameters
+  const { account, chainId, connector, ...rest } = parameters
 
   let client: Client
   if (typeof account === 'object' && account.type === 'local')
     client = config.getClient({ chainId })
   else
-    client = await getConnectorClient(config, { account, chainId, connector })
+    client = await getConnectorClient(config, {
+      account: account ?? undefined,
+      assertChainId: false,
+      chainId,
+      connector,
+    })
 
-  const { connector: activeConnector } = getAccount(config)
-
-  const gas = await (async () => {
-    // Skip gas estimation if `data` doesn't exist (not a contract interaction).
-    if (!('data' in parameters) || !parameters.data) return undefined
-
-    // Skip gas estimation if connector supports simulation.
-    if ((connector ?? activeConnector)?.supportsSimulation) return undefined
-
-    // Skip gas estimation if `null` is provided.
-    if (gas_ === null) return undefined
-
-    // Run gas estimation if no value is provided.
-    if (gas_ === undefined) {
-      const action = getAction(client, viem_estimateGas, 'estimateGas')
-      return action({
-        ...(rest as any),
-        account,
-        chain: chainId ? { id: chainId } : null,
-      })
-    }
-
-    // Use provided gas value.
-    return gas_
+  const chain = (() => {
+    if (!chainId || client.chain?.id === chainId) return client.chain
+    return { id: chainId }
   })()
 
   const action = getAction(client, viem_signTransaction, 'signTransaction')
   const signature = await action({
     ...(rest as any),
     ...(account ? { account } : {}),
-    gas,
-    chain: chainId ? { id: chainId } : null,
+    assertChainId: !!chainId,
+    chain,
+    gas: rest.gas ?? undefined,
   })
 
   return signature

@@ -386,6 +386,8 @@ export {
   type SendRawTransactionData,
   type SendRawTransactionMutate,
   type SendRawTransactionMutateAsync,
+  type SendRawTransactionMutationOptions,
+  type SendRawTransactionOptions,
   type SendRawTransactionVariables,
   sendRawTransactionMutationOptions,
 } from '../query/sendRawTransaction.js'
@@ -434,6 +436,8 @@ export {
   type SignTransactionData,
   type SignTransactionMutate,
   type SignTransactionMutateAsync,
+  type SignTransactionMutationOptions,
+  type SignTransactionOptions,
   type SignTransactionVariables,
   signTransactionMutationOptions,
 } from '../query/signTransaction.js'

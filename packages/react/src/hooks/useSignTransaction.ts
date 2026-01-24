@@ -6,37 +6,23 @@ import type {
   ResolvedRegister,
   SignTransactionErrorType,
 } from '@wagmi/core'
-import type { Compute } from '@wagmi/core/internal'
+import type { Compute, ConfigParameter } from '@wagmi/core/internal'
 import {
   type SignTransactionData,
   type SignTransactionMutate,
   type SignTransactionMutateAsync,
+  type SignTransactionOptions,
   type SignTransactionVariables,
   signTransactionMutationOptions,
 } from '@wagmi/core/query'
 
-import type { ConfigParameter } from '../types/properties.js'
-import type {
-  UseMutationParameters,
-  UseMutationReturnType,
-} from '../utils/query.js'
+import type { UseMutationReturnType } from '../utils/query.js'
 import { useConfig } from './useConfig.js'
 
 export type UseSignTransactionParameters<
   config extends Config = Config,
   context = unknown,
-> = Compute<
-  ConfigParameter<config> & {
-    mutation?:
-      | UseMutationParameters<
-          SignTransactionData,
-          SignTransactionErrorType,
-          SignTransactionVariables<config, config['chains'][number]['id']>,
-          context
-        >
-      | undefined
-  }
->
+> = Compute<ConfigParameter<config> & SignTransactionOptions<config, context>>
 
 export type UseSignTransactionReturnType<
   config extends Config = Config,
@@ -46,9 +32,13 @@ export type UseSignTransactionReturnType<
     SignTransactionData,
     SignTransactionErrorType,
     SignTransactionVariables<config, config['chains'][number]['id']>,
-    context
+    context,
+    SignTransactionMutate<config, context>,
+    SignTransactionMutateAsync<config, context>
   > & {
+    /** @deprecated use `mutate` instead */
     signTransaction: SignTransactionMutate<config, context>
+    /** @deprecated use `mutateAsync` instead */
     signTransactionAsync: SignTransactionMutateAsync<config, context>
   }
 >
@@ -60,20 +50,13 @@ export function useSignTransaction<
 >(
   parameters: UseSignTransactionParameters<config, context> = {},
 ): UseSignTransactionReturnType<config, context> {
-  const { mutation } = parameters
-
   const config = useConfig(parameters)
-
-  const mutationOptions = signTransactionMutationOptions(config)
-  const { mutate, mutateAsync, ...result } = useMutation({
-    ...mutation,
-    ...mutationOptions,
-  })
-
+  const options = signTransactionMutationOptions(config, parameters)
+  const mutation = useMutation(options)
   type Return = UseSignTransactionReturnType<config, context>
   return {
-    ...result,
-    signTransaction: mutate as Return['signTransaction'],
-    signTransactionAsync: mutateAsync as Return['signTransactionAsync'],
+    ...(mutation as Return),
+    signTransaction: mutation.mutate as Return['mutate'],
+    signTransactionAsync: mutation.mutateAsync as Return['mutateAsync'],
   }
 }

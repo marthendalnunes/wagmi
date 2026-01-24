@@ -7,24 +7,40 @@ import {
   signTransaction,
 } from '../actions/signTransaction.js'
 import type { Config } from '../createConfig.js'
+import type { MutationParameter } from '../types/query.js'
 import type { Compute } from '../types/utils.js'
 
-export function signTransactionMutationOptions<config extends Config>(
+export type SignTransactionOptions<
+  config extends Config,
+  context = unknown,
+> = MutationParameter<
+  SignTransactionData,
+  SignTransactionErrorType,
+  SignTransactionVariables<config, config['chains'][number]['id']>,
+  context
+>
+
+export function signTransactionMutationOptions<config extends Config, context>(
   config: config,
-) {
+  options: SignTransactionOptions<config, context> = {},
+): SignTransactionMutationOptions<config> {
   return {
+    ...(options.mutation as any),
     mutationFn(variables) {
       return signTransaction(config, variables)
     },
     mutationKey: ['signTransaction'],
-  } as const satisfies MutationOptions<
+  }
+}
+
+export type SignTransactionMutationOptions<config extends Config> =
+  MutationOptions<
     SignTransactionData,
     SignTransactionErrorType,
     SignTransactionVariables<config, config['chains'][number]['id']>
   >
-}
 
-export type SignTransactionData = SignTransactionReturnType
+export type SignTransactionData = Compute<SignTransactionReturnType>
 
 export type SignTransactionVariables<
   config extends Config,
