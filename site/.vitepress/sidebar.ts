@@ -268,13 +268,12 @@ export function getSidebar() {
           },
           { text: 'useReconnect', link: '/react/api/hooks/useReconnect' },
           {
-<<<<<<< HEAD
-            text: 'useSendRawTransaction',
-            link: '/react/api/hooks/useSendRawTransaction',
-=======
             text: 'useSendCalls',
             link: '/react/api/hooks/useSendCalls',
->>>>>>> 737a8ef6005b975ce6538fc73dcef40687304c5f
+          },
+          {
+            text: 'useSendRawTransaction',
+            link: '/react/api/hooks/useSendRawTransaction',
           },
           {
             text: 'useSendTransaction',
@@ -580,7 +579,7 @@ export function getSidebar() {
             text: 'useReadContract',
             link: '/vue/api/composables/useReadContract',
           },
-{
+          {
             text: 'useReconnect',
             link: '/react/api/hooks/useReconnect',
           },
